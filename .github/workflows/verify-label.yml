@@ -5,6 +5,7 @@ on:
   # Triggers the workflow on push or pull request events
   pull_request:
     branches: [main]
+    types: [opened, labeled, unlabeled]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
