@@ -15,14 +15,16 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # - uses: alexwilson/enable-github-automerge-action@1.0.0
-      #   with:
-      #     github-token: "${{ secrets.GITHUB_TOKEN }}"
-      #     merge-method: "REBASE"
+      # - name: Checkout
+      #   uses: actions/checkout@v1
 
       - name: Enable Pull Request Automerge
+        #   uses: alexwilson/enable-github-automerge-action@1.0.0
+        #   with:
+        #     github-token: "${{ secrets.GITHUB_TOKEN }}"
+        #     merge-method: "REBASE"
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          pull-request-number: ${{ steps.cpr.outputs.pull-request-number }}
+          pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: rebase
