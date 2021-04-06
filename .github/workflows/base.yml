@@ -20,8 +20,3 @@ jobs:
         with:
           github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
-        # uses: peter-evans/enable-pull-request-automerge@v1
-        # with:
-        #   token: ${{ secrets.ALFIE_PAT }}
-        #   pull-request-number: ${{ github.event.pull_request.number }}
-        #   merge-method: rebase
