@@ -3,9 +3,8 @@ name: Base Action
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events
-  pull_request:
-    # branches: ["*"]
-    types: [labeled, unlabeled, synchronize, ready_for_review, review_requested]
+  pull_request_target:
+    types: [opened, synchronize]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,4 +19,4 @@ jobs:
       - uses: alexwilson/enable-github-automerge-action@1.0.0
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
-          merge-method: "SQUASH"
+          merge-method: "REBASE"
