@@ -19,5 +19,5 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: alexwilson/enable-github-automerge-action@1.0.0
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
+          github-token: "${{ secrets.IDK_WHAT_THIS_IS_FOR }}"
           merge-method: "REBASE"
