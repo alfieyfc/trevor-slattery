@@ -3,7 +3,7 @@ name: Base Action
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events
-  pull_request:
+  pull_request_target:
     branches: ["*"]
     types: [opened, synchronize]
 
