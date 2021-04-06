@@ -19,12 +19,12 @@ jobs:
       #   uses: actions/checkout@v1
 
       - name: Enable Pull Request Automerge
-        #   uses: alexwilson/enable-github-automerge-action@1.0.0
-        #   with:
-        #     github-token: "${{ secrets.GITHUB_TOKEN }}"
-        #     merge-method: "REBASE"
-        uses: peter-evans/enable-pull-request-automerge@v1
+        uses: alexwilson/enable-github-automerge-action@1.0.0
         with:
-          token: ${{ secrets.ALFIE_PAT }}
-          pull-request-number: ${{ github.event.pull_request.number }}
-          merge-method: rebase
+          github-token: "${{ secrets.ALFIE_PAT }}"
+          merge-method: "REBASE"
+        # uses: peter-evans/enable-pull-request-automerge@v1
+        # with:
+        #   token: ${{ secrets.ALFIE_PAT }}
+        #   pull-request-number: ${{ github.event.pull_request.number }}
+        #   merge-method: rebase
