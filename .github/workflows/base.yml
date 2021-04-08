@@ -21,20 +21,19 @@ jobs:
         with:
           github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
-
   # Create PR release/* --> main if DNE
-  create-pr-if-dne:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create Pull Request
-        id: cpr
-        uses: peter-evans/create-pull-request@v3
-        with:
-          branch: ${{ github.event.pull_request.base.ref }}
-          base: main
-          title: ${{ github.event.pull_request.base.ref }}
-      - name: Check outputs
-        run: |
-          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+  # create-pr-if-dne:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Create Pull Request
+  #       id: cpr
+  #       uses: peter-evans/create-pull-request@v3
+  #       with:
+  #         branch: ${{ github.event.pull_request.base.ref }}
+  #         base: main
+  #         title: ${{ github.event.pull_request.base.ref }}
+  #     - name: Check outputs
+  #       run: |
+  #         echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+  #         echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
