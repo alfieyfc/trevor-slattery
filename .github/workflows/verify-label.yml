@@ -1,13 +1,9 @@
-name: Verify PR Labels
+name: Before Automerge
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events
   pull_request:
-<<<<<<< HEAD
-    branches: [release/*]
-=======
->>>>>>> 53c0284 (feat/cpr: fix trigger branch & type)
     types: [opened, reopened, labeled, unlabeled]
 
   # # Allows you to run this workflow manually from the Actions tab
@@ -17,6 +13,7 @@ on:
 jobs:
   # Job "verify"
   verify-label:
+    name: Verify Label
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
