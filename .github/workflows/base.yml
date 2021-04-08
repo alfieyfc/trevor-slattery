@@ -1,19 +1,19 @@
-name: Base Action
+name: On PR Creation
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events
   pull_request:
     branches: [release/*]
-    types: [opened, synchronize, reopened]
+    types: [opened, reopened]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # Job "enable-auto-merge"
   enable-auto-merge:
+    name: Enbable Automerge
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Enable Pull Request Automerge
@@ -22,29 +22,25 @@ jobs:
           github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
 
-  # Create PR release/* --> main if DNE
-  create-pr-if-dne:
+  # Job Auto-Rebase
+  auto-rebase:
+    name: Auto Rebase
     runs-on: ubuntu-latest
-    # steps:
-    #   - uses: actions/checkout@v2
-    #   - name: Create Pull Request
-    #     id: cpr
-    #     uses: peter-evans/create-pull-request@v3
-    #     with:
-    #       branch: ${{ github.event.pull_request.base.ref }}
-    #       base: main
-    #       title: ${{ github.event.pull_request.base.ref }}
-    #   - name: Check outputs
-    #     run: |
-    #       echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
-    #       echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.KILLIAN_ID }}
+          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - uses: Label305/AutoRebase@v0.1
+        with:
+          github_token: ${{ steps.generate_token.outputs.token }}
 
-    # steps:
-    #   - name: Create PR
-    #     uses: funivan/github-autopr@0.2.0
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
+  # Create PR release/* --> main if DNE
+  create-pr-to-default-if-dne:
+    name: Create PR to default branch if DNE
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: pull-request
@@ -54,11 +50,4 @@ jobs:
           destination_branch: "main" # If blank, default: master
           pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main" # Title of pull request
           pr_body: ":crown: *An automated PR*" # Full markdown support, requires pr_title to be set
-          # pr_template: ".github/PULL_REQUEST_TEMPLATE.md"   # Path to pull request template, requires pr_title to be set, excludes pr_body
-          # pr_reviewer: "wei,worker"                         # Comma-separated list (no spaces)
-          # pr_assignee: "wei,worker"                         # Comma-separated list (no spaces)
-          # pr_label: "auto-pr"                               # Comma-separated list (no spaces)
-          # pr_milestone: "Milestone 1"                       # Milestone name
-          # pr_draft: true                                    # Creates pull request as draft
-          # pr_allow_empty: true                              # Creates pull request even if there are no changes
           github_token: ${{ secrets.GITHUB_TOKEN }}
