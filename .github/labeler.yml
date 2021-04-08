@@ -1,8 +1,2 @@
 "autorebase:opt-in":
   - "**/*"
-
-label-test:
-  - "**/*"
-
-test1:
-  - "**/*"
