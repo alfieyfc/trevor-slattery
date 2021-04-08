@@ -1,2 +1,2 @@
 autorebase:opt-in:
-  - any: ["./**"]
+  - any: ["./*"]
