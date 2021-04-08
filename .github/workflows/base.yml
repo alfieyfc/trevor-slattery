@@ -5,7 +5,7 @@ on:
   # Triggers the workflow on push or pull request events
   pull_request:
     branches: [release/*]
-    types: [opened, reopened]
+    types: [opened, synchronize, reopened]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,9 +30,9 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
-          branch: ${{ github.event.pull_request.head.ref }}
+          branch: ${{ github.event.pull_request.base.ref }}
           base: main
-          title: ${{ github.event.pull_request.head.ref }}
+          title: ${{ github.event.pull_request.base.ref }}
       - name: Check outputs
         run: |
           echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
