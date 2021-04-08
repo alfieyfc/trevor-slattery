@@ -4,7 +4,6 @@ name: Verify PR Labels
 on:
   # Triggers the workflow on push or pull request events
   pull_request:
-    branches: ["*"]
     types: [opened, reopened, labeled, unlabeled]
 
   # Allows you to run this workflow manually from the Actions tab
