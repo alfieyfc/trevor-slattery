@@ -46,12 +46,19 @@ jobs:
     name: Create PR to default branch if DNE
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: pull-request
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.RM_ID }}
+          private_key: ${{ secrets.RM_PRIVATE_KEY }}
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Create PR
         uses: repo-sync/pull-request@v2
         with:
           source_branch: ${{ github.event.pull_request.base.ref }} # If blank, default: triggered branch
           destination_branch: "main" # If blank, default: master
           pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main" # Title of pull request
           pr_body: ":crown: *An automated PR*" # Full markdown support, requires pr_title to be set
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ steps.generate_token.outputs.token }}
