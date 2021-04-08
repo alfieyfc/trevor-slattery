@@ -26,6 +26,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.base.ref }}
       - name: Create Pull Request
         id: cpr
         uses: peter-evans/create-pull-request@v3
