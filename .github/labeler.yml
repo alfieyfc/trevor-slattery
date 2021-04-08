@@ -1,0 +1,2 @@
+autorebase:opt-in:
+  - any: ["*"]
