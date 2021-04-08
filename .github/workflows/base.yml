@@ -4,6 +4,7 @@ name: Base Action
 on:
   # Triggers the workflow on push or pull request events
   pull_request:
+    branches: [release/*]
     types: [opened, reopened]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -20,3 +21,19 @@ jobs:
         with:
           github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
+
+  # Create PR release/* --> main if DNE
+  create-pr-if-dne:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v3
+        with:
+          branch: ${{ github.event.pull_request.head.ref }}
+          base: main
+          title: ${{ github.event.pull_request.head.ref }}
+      - name: Check outputs
+        run: |
+          echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+          echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"

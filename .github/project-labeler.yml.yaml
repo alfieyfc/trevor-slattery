@@ -1,4 +1,0 @@
-projects:
-  - match: release/* # RegExp for project name
-    labels: # List of label's rules
-      - required: ["documentation"] # Labels that should be on issues from matching projects
