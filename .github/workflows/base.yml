@@ -30,6 +30,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v3
         with:
+          token: ${{ secrets.ALFIE_PAT }}
           branch: ${{ github.event.pull_request.base.ref }}
           base: main
           title: ${{ github.event.pull_request.base.ref }}
