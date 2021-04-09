@@ -33,3 +33,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           ref: main
+      - name: Label Commenter
+        uses: peaceiris/actions-label-commenter@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
