@@ -22,9 +22,8 @@ jobs:
           github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
       - name: Enable Auto Rebase
-        uses: christianvuerings/add-labels@v1
+        uses: buildsville/add-remove-label@v1
         with:
-          labels: |
-            autorebase:opt-in
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          label: autorebase:opt-in
+          type: add
+          token: ${{secrets.GITHUB_TOKEN}}
