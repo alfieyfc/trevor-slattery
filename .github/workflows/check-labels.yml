@@ -7,7 +7,7 @@ on:
     types: [labeled, unlabeled]
 jobs:
   verify-label:
-    name: Verify Label
+    name: Check Labels
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -19,3 +19,11 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           valid-labels: "Ready to Merge"
           invalid-labels: "help wanted, invalid"
+      - uses: actions/checkout@v2
+        # if: $${{ github.event.pull_request.}}
+        with:
+          ref: main
+      - name: Label Commenter
+        uses: peaceiris/actions-label-commenter@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
