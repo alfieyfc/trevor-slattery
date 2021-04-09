@@ -10,8 +10,8 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   create-pr-to-default:
+    # if: ${{ github.event.pull_request.merged == 'true' }}
     name: Create PR to default branch
-    if: ${{ github.event.pull_request.merged == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: Generate token
@@ -28,6 +28,6 @@ jobs:
           source_branch: ${{ github.event.pull_request.base.ref }}
           destination_branch: "main" # If blank, default: master
           pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main" # Title of pull request
-          pr_body: ":crown: *An automated PR*" # Full markdown support, requires pr_title to be set
+          pr_body: "${{ github.event.pull_request.merged }} :crown: *An automated PR*" # Full markdown support, requires pr_title to be set
           pr_label: "autorebase:opt-in"
           github_token: ${{ steps.generate_token.outputs.token }}
