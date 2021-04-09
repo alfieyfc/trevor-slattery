@@ -16,5 +16,20 @@ jobs:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       - uses: Label305/AutoRebase@v0.1
+        id: autorebase
         with:
           github_token: ${{ steps.generate_token.outputs.token }}
+      - name: Instructions on failure
+        uses: github-actions-up-and-running/pr-comment@v1.0.0
+        with:
+          repo-token: ${{ steps.generate_token.outputs.token }}
+          message: |
+            Failed to rebase automatically! Most likely due to incompatible commit messages.
+            You may rebase ${{ github.event.pull_request.head.ref }} to ${{ github.event.pull_request.base.ref }} manually:
+            ```shell
+            git checkout ${{ github.event.pull_request.head.ref }}
+            git rebase ${{ github.event.pull_request.base.ref }}
+            git push --force
+            ```
+
+            ${{ steps.autorebase.outputs }}
