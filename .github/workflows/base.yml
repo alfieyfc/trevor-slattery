@@ -2,7 +2,6 @@ name: On PR Creation
 
 # Controls when the action will run.
 on:
-  workflow_dispatch:
   # Triggers the workflow on push or pull request events
   pull_request:
     types: [opened, edited, reopened]
@@ -34,3 +33,18 @@ jobs:
         with:
           github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
+
+  create-pr-to-default:
+    name: Create PR to default branch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create PR
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: ${{ github.event.pull_request.base.ref }}
+          destination_branch: "main" # If blank, default: master
+          pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main" # Title of pull request
+          pr_body: ":crown: *An automated PR*" # Full markdown support, requires pr_title to be set
+          pr_label: "autorebase:opt-in"
+          pr_allow_empty: true
+          github_token: ${{ steps.generate_token.outputs.token }}
