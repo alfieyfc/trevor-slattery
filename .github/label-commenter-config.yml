@@ -8,9 +8,9 @@ labels:
       pr:
         body: |
           This PR will automatically rebase if target branch is updated before we merge.
-        action: opened
+        action: open
     unlabeled:
       pr:
         body: |
           Opt-out of automatic rebase!
-        action: opened
+        action: open
