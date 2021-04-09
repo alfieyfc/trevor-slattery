@@ -29,8 +29,9 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
       - name: Enable Pull Request Automerge
         if: ${{ github.event.pull_request.base.ref != 'main' }}
-        uses: alexwilson/enable-github-automerge-action@1.0.0
+        uses: peter-evans/enable-pull-request-automerge@v1
         with:
           # github-token: "${{ secrets.ALFIE_PAT }}"
-          github-token: "${{ steps.generate_token.outputs.token }}"
+          token: "${{ steps.generate_token.outputs.token }}"
+          pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: "REBASE"
