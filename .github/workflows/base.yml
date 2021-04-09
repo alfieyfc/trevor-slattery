@@ -23,10 +23,10 @@ jobs:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       - name: Enable Pull Request Automerge
-        uses: alexwilson/enable-github-automerge-action@1.0.0
+        uses: peter-evans/enable-pull-request-automerge@v1
         with:
-          github-token: "${{ steps.automerge_t.outputs.token }}"
-          # github-token: ${{ secrets.ALFIE_PAT }}
+          token: ${{ steps.automerge_t.outputs.token }}
+          pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: "REBASE"
 
   opt-in-auto-rebase:
