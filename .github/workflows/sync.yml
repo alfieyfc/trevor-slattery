@@ -21,7 +21,7 @@ jobs:
           github_token: ${{ steps.generate_token.outputs.token }}
       - name: Instructions on failure
         if: failure()
-        uses: github-actions-up-and-running/pr-comment@v1.0.0
+        uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ steps.generate_token.outputs.token }}
           message: 😢
