@@ -1,29 +1,24 @@
 comment:
-  header: Hi, there.
-  footer: "\
-    ---\n\n
-    > This is an automated comment created by the [peaceiris/actions-label-commenter]. \
-    Responding to the bot or mentioning it won't have any effect.\n\n
-    [peaceiris/actions-label-commenter]: https://github.com/peaceiris/actions-label-commenter
-    "
+  header:
+  footer:
 
 labels:
   - name: autorebase:opt-in
-    # labeled:
-    #   pr:
-    #     body: |
-    #       Opt-in automatic rebase!
-    #     action: opened
-    unlabeled:
+    labeled:
       pr:
         body: |
-          The Auto-Rebase label [![label: autorebase:opt-in][~autorebase:opt-in]](https://github.com/alfieyfc/trevor-slattery/labels/autorebase%3Aopt-in) isn't added. This is most likely due to a known [issue](https://github.com/actions/labeler/issues/135) of the action [labeler](https://github.com/actions/labeler).
-
-          *_Please manually label this PR for automatic rebase if that suits your purpose._*
-
-          [~autorebase:opt-in]: https://img.shields.io/badge/-autorebase%3Aopt--in-yellowgreen
-
+          Opt-in automatic rebase!
         action: opened
+    # unlabeled:
+    #   pr:
+    #     body: |
+    #       The Auto-Rebase label [![label: autorebase:opt-in][~autorebase:opt-in]](https://github.com/alfieyfc/trevor-slattery/labels/autorebase%3Aopt-in) isn't added. This is most likely due to a known [issue](https://github.com/actions/labeler/issues/135) of the action [labeler](https://github.com/actions/labeler).
+
+    #       *_Please manually label this PR for automatic rebase if that suits your purpose._*
+
+    #       [~autorebase:opt-in]: https://img.shields.io/badge/-autorebase%3Aopt--in-yellowgreen
+
+    #     action: opened
   # - name: undefined
   #   labeled:
   #     pr:
