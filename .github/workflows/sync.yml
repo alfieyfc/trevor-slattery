@@ -26,9 +26,16 @@ jobs:
           repo-token: ${{ steps.generate_token.outputs.token }}
           message: |
             Failed to rebase automatically! Most likely due to incompatible commit messages.
-            You may rebase `${{ github.event.pull_request.head.ref }}` to `${{ github.event.pull_request.base.ref }}` manually:
+            You may rebase `${{ github.event.pull_request.head.ref }}` to `${{ github.event.pull_request.base.ref }}` manually, ie:
             ```shell
             git checkout ${{ github.event.pull_request.head.ref }}
-            git rebase ${{ github.event.pull_request.base.ref }}
+            git rebase origin/${{ github.event.pull_request.base.ref }}
             git push --force
             ```
+      - name: Remove Auto Rebase
+        if: failure()
+        uses: buildsville/add-remove-label@v1
+        with:
+          label: autorebase:opt-in
+          type: remove
+          token: ${{secrets.GITHUB_TOKEN}}
