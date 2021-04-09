@@ -28,9 +28,3 @@ jobs:
             autorebase:opt-in
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
