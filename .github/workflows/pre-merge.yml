@@ -1,17 +1,11 @@
-name: Before Automerge
+name: Check Labels
 
 # Controls when the action will run.
 on:
   # Triggers the workflow on push or pull request events
   pull_request:
-    types: [opened, reopened, labeled, unlabeled]
-
-  # # Allows you to run this workflow manually from the Actions tab
-  # workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    types: [labeled, unlabeled]
 jobs:
-  # Job "verify"
   verify-label:
     name: Verify Label
     # The type of runner that the job will run on
@@ -25,3 +19,7 @@ jobs:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
           valid-labels: "Ready to Merge"
           invalid-labels: "help wanted, invalid"
+      - name: Label Commenter
+        uses: peaceiris/actions-label-commenter@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
