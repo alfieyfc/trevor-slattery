@@ -36,8 +36,15 @@ jobs:
 
   create-pr-to-default:
     name: Create PR to default branch
+    if: ${{ github.event.pull_request.base.ref }}
     runs-on: ubuntu-latest
     steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.RM_ID }}
+          private_key: ${{ secrets.RM_PRIVATE_KEY }}
       - name: Create PR
         uses: repo-sync/pull-request@v2
         with:
