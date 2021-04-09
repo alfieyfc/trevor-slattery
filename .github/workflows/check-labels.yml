@@ -13,6 +13,12 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: Label Commenter
+        uses: peaceiris/actions-label-commenter@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
         with:
