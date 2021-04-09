@@ -7,28 +7,10 @@ labels:
     labeled:
       pr:
         body: |
-          Opt-in automatic rebase!
+          This PR will automatically rebase if target branch is updated before we merge.
         action: opened
-    # unlabeled:
-    #   pr:
-    #     body: |
-    #       The Auto-Rebase label [![label: autorebase:opt-in][~autorebase:opt-in]](https://github.com/alfieyfc/trevor-slattery/labels/autorebase%3Aopt-in) isn't added. This is most likely due to a known [issue](https://github.com/actions/labeler/issues/135) of the action [labeler](https://github.com/actions/labeler).
-
-    #       *_Please manually label this PR for automatic rebase if that suits your purpose._*
-
-    #       [~autorebase:opt-in]: https://img.shields.io/badge/-autorebase%3Aopt--in-yellowgreen
-
-    #     action: opened
-  # - name: undefined
-  #   labeled:
-  #     pr:
-  #       body: |
-  #         undefined label
-  #       action: opened
-  #   unlabeled:
-  #     pr:
-  #       body: |
-  #         The Auto-Rebase label [![label: autorebase:opt-in][~autorebase:opt-in]](https://github.com/alfieyfc/trevor-slattery/labels/autorebase%3Aopt-in) isn't added. This is most likely due to a known [issue](https://github.com/actions/labeler/issues/135) of the action [labeler](https://github.com/actions/labeler).
-  #         *_Please manually label this PR for automatic rebase if that suits your purpose._*
-  #         [~autorebase:opt-in]: https://img.shields.io/badge/-autorebase%3Aopt--in-yellowgreen
-  #       action: opened
+    unlabeled:
+      pr:
+        body: |
+          Opt-out of automatic rebase!
+        action: opened
