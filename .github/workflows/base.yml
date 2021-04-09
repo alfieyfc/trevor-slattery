@@ -28,5 +28,11 @@ jobs:
           github-token: ${{ steps.generate_token.outputs.token }}
           merge-method: "REBASE"
 
-
-
+  opt-in-auto-rebase:
+    name: Label auto-rebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label auto-rebase
+        uses: actions/labeler@main
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
