@@ -19,7 +19,7 @@ jobs:
       - name: Enable Pull Request Automerge
         uses: alexwilson/enable-github-automerge-action@1.0.0
         with:
-          github-token: "${{ secret.ALFIE_PAT }}"
+          github-token: "${{ secrets.ALFIE_PAT }}"
           merge-method: "REBASE"
 
   opt-in-auto-rebase:
