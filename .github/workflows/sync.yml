@@ -26,10 +26,9 @@ jobs:
           repo-token: ${{ steps.generate_token.outputs.token }}
           message: |
             Failed to rebase automatically! Most likely due to incompatible commit messages.
-            You may rebase ${{ github.event.pull_request.head.ref }} to ${{ github.event.pull_request.base.ref }} manually:
+            You may rebase `${{ github.event.pull_request.head.ref }}` to `${{ github.event.pull_request.base.ref }}` manually:
             ```shell
             git checkout ${{ github.event.pull_request.head.ref }}
             git rebase ${{ github.event.pull_request.base.ref }}
             git push --force
             ```
-            ${{ steps.autorebase.outputs }}
