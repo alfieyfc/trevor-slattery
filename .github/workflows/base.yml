@@ -25,7 +25,8 @@ jobs:
       - name: Enable Pull Request Automerge
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
-          token: ${{ steps.automerge_t.outputs.token }}
+          token: ${{ secrets.ALFIE_PAT }}
+          # token: ${{ steps.automerge_t.outputs.token }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: "REBASE"
 
