@@ -1,4 +1,4 @@
-name: On PR Creation
+name: Release Branch Merged
 
 # Controls when the action will run.
 on:
