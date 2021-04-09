@@ -45,6 +45,8 @@ jobs:
         with:
           app_id: ${{ secrets.RM_ID }}
           private_key: ${{ secrets.RM_PRIVATE_KEY }}
+      - name: checkout
+        uses: actions/checkout@v2
       - name: Create PR
         uses: repo-sync/pull-request@v2
         with:
