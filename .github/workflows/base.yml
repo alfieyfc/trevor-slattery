@@ -16,15 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Enable Pull Request Automerge
-        if: ${{ github.event.pull_request.base.ref }} != "main"
-        uses: alexwilson/enable-github-automerge-action@1.0.0
-        with:
-          github-token: "${{ secrets.ALFIE_PAT }}"
-          merge-method: "REBASE"
       - name: Enable Auto Rebase
         uses: buildsville/add-remove-label@v1
         with:
           label: autorebase:opt-in
           type: add
           token: ${{secrets.GITHUB_TOKEN}}
+      - name: Enable Pull Request Automerge
+        if: ${{ github.event.pull_request.base.ref }} != "main"
+        uses: alexwilson/enable-github-automerge-action@1.0.0
+        with:
+          github-token: "${{ secrets.ALFIE_PAT }}"
+          merge-method: "REBASE"
