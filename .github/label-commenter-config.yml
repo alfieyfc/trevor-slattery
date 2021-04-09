@@ -1,5 +1,10 @@
 labels:
   - name: autorebase:opt-in
+    labeled:
+      pr:
+        body: |
+          Opt-in automatic rebase!
+        action: open
     unlabeled:
       pr:
         body: |
