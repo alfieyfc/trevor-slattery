@@ -26,6 +26,11 @@ labels:
         action: open
 
   - name: undefined
+    labeled:
+      pr:
+        body: |
+          undefined label
+        action: open
     unlabeled:
       pr:
         body: |
