@@ -1,0 +1,24 @@
+name: On PR Creation
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+
+jobs:
+  auto-rebase:
+    name: Auto Rebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label auto-rebase
+        uses: actions/labeler@main
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.KILLIAN_ID }}
+          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - uses: Label305/AutoRebase@v0.1
+        with:
+          github_token: ${{ steps.generate_token.outputs.token }}
