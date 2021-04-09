@@ -16,16 +16,17 @@ jobs:
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # - name: Generate token
-      #   id: generate_token
-      #   uses: tibdex/github-app-token@v1
-      #   with:
-      #     app_id: ${{ secrets.KILLIAN_ID }}
-      #     private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Generate token
+        id: automerge_t
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.KILLIAN_ID }}
+          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       - name: Enable Pull Request Automerge
         uses: alexwilson/enable-github-automerge-action@1.0.0
         with:
-          github-token: ${{ secrets.ALFIE_PAT }} #"${{ steps.generate_token.outputs.token }}"
+          github-token: "${{ steps.automerge_t.outputs.token }}"
+          # github-token: ${{ secrets.ALFIE_PAT }}
           merge-method: "REBASE"
 
   opt-in-auto-rebase:
