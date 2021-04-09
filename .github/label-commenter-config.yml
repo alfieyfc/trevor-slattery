@@ -6,11 +6,9 @@ labels:
   - name: autorebase:opt-in
     labeled:
       pr:
-        body: |
-          This PR will automatically rebase if target branch is updated before we merge.
+        body: This PR will automatically rebase if target branch is updated before we merge.
         action: open
     unlabeled:
       pr:
-        body: |
-          Opt-out of automatic rebase!
+        body: Opt-out of automatic rebase!
         action: open
