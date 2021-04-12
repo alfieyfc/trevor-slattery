@@ -17,12 +17,13 @@ jobs:
     steps:
       - name: Enable Pull Request Automerge
         if: ${{ github.event.pull_request.base.ref != 'main' }}
-        uses: alexwilson/enable-github-automerge-action@1.0.0
+        uses: peter-evans/enable-pull-request-automerge@v1
         with:
-          github-token: "${{ secrets.ALFIE_PAT }}"
+          token: ${{ secrets.ALFIE_PAT }}
+          pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: "REBASE"
       - name: Instructions to Automerge & Rebase
-        if: success() && ${{ github.event.pull_request.base.ref != 'main' }}
+        if: ${{ github.event.pull_request.base.ref != 'main' }}
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
