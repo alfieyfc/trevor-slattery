@@ -20,20 +20,24 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        if: github.event.issue.pull_request != ''
         uses: cirrus-actions/rebase@1.4
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+      - name: Get Pull Request Data
+        id: pr_data
+        uses: simpleactions/get-pull-request@v1.0.0
+        with:
+          pull_number: ${{ github.event.issue.number }}
       - name: Instructions when failing
         if: failure()
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            Auto rebase failed! Please try rebasing in your local environment and force push to ${{ github.event.issue.pull_request.head.ref }}.
+            Auto rebase failed! Please try rebasing in your local environment and force push to ${{ steps.pr_data.head_ref }}.
             ```bash
             git fetch
-            git checkout ${{ github.event.issue.pull_request.head.ref }}
+            git checkout ${{ steps.pr_data.head_ref }}
             git rebase origin/release/0413
             ## Resolve conflicts if necessary
             git push --force
@@ -44,10 +48,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: On success
-        if: ${{ github.event.issue.pull_request != 'main' }}
+        if: ${{ jobs.rebase.steps.pr_data.base_ref != 'main' }}
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            ${{ github.event.issue.pull_request.head.ref }} is up to date!
+            ${{ needs.rebase.steps.pr_data.head_ref }} is up to date!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
