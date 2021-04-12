@@ -1,27 +1,14 @@
-name: Check Labels
-
-# Controls when the action will run.
+name: Labels Check
 on:
-  # Triggers the workflow on push or pull request events
   pull_request:
-    types: [labeled, unlabeled]
+    types: [opened, labeled, unlabeled, synchronize]
 jobs:
-  verify-label:
-    if: github.event.pull_request.state != 'closed'
-    name: Check Labels
-    # The type of runner that the job will run on
+  default-check:
+    name: Default Check
     runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: jesusvasquez333/verify-pr-label-action@v1.4.0
+      - uses: danielchabr/pr-labels-checker@v3
+        id: checkLabel
         with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-          valid-labels: "Ready to Merge"
-          invalid-labels: "help wanted, invalid"
-      - name: checkout
-        uses: actions/checkout@v2
-      - name: Label Commenter
-        uses: peaceiris/actions-label-commenter@v1
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          hasSome: "Ready to Merge"
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
