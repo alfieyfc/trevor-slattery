@@ -28,6 +28,7 @@ jobs:
         id: pr_data
         uses: simpleactions/get-pull-request@v1.0.0
         with:
+          github_token: ${{ steps.generate_token.outputs.token }}
           pull_number: ${{ github.event.issue.number }}
       - name: Instructions when failing
         if: failure()
