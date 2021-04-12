@@ -52,7 +52,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
-            Auto rebase failed! Please try rebasing in your local environment and force push to ${{ needs.get-pr.outputs.head_ref }}.
+            Auto rebase failed! Please try rebasing in your local environment and force push to `${{ needs.get-pr.outputs.head_ref }}`.
             ```bash
             git fetch
             git checkout ${{ needs.get-pr.outputs.head_ref }}
@@ -66,7 +66,7 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
-            ${{ needs.get-pr.outputs.head_ref }} is up to date!
+            `${{ needs.get-pr.outputs.head_ref }}` is up to date with `${{ needs.get-pr.outputs.base_ref }}`!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
   invalid:
     needs: get-pr
@@ -85,4 +85,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
-            This PR was closed. Please reopen or create another PR before the attempt of rebasing ${{ needs.get-pr.outputs.head_ref }}.
+            This PR was closed. Please reopen or create another PR before the attempt of rebasing `${{ needs.get-pr.outputs.head_ref }}`.
