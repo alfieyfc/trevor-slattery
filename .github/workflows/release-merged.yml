@@ -32,7 +32,6 @@ jobs:
           # Full markdown support, requires pr_title to be set
           pr_body: |
             :crown: *An automated PR*
-            * ${{ github.event.pull_request.title }} (#${{ github.event.pull_request.number }}) @${{ github.event.pull_request.author }}
             <!-- START pr-commits -->
             <!-- END pr-commits -->
           github_token: ${{ steps.generate_token.outputs.token }}
