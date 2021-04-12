@@ -31,27 +31,3 @@ jobs:
           pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main" # Title of pull request
           pr_body: ":crown: *An automated PR*" # Full markdown support, requires pr_title to be set
           github_token: ${{ steps.generate_token.outputs.token }}
-  update-comment:
-    name: Update RM Comment
-    runs-on: ubuntu-latest
-    steps:
-      - name: Find Pull Request
-        uses: juliangruber/find-pull-request-action@v1
-        id: find-pull-request
-        with:
-          branch: ${{ github.event.pull_request.base.ref }}
-      - name: find-comment
-        uses: peter-evans/find-comment@v1
-        id: fc
-        with:
-          issue-number: ${{ steps.find-pull-request.outputs.number }}
-          comment-author: anthony-masters
-      - name: Update comment
-        uses: jungwinter/comment@v1
-        with:
-          type: edit
-          body: |
-            ${{ steps.find-comment.outputs.comment-body }}
-            - [x] ${{ github.event.pull_request.title }} #${{github.event.pull_request.number}}
-          comment_id: ${{ steps.find-comment.outputs.comment-id }}
-          token: ${{ secrets.GITHUB_TOKEN }}
