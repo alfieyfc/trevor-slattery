@@ -3,12 +3,12 @@ on:
   pull_request:
     types: [opened, labeled, unlabeled, synchronize]
 jobs:
-  default-check:
-    name: Default Check
+  ready-to-merge:
+    name: Ready to Merge
     runs-on: ubuntu-latest
     steps:
       - uses: danielchabr/pr-labels-checker@v3.0
         id: checkLabel
         with:
-          hasSome: "Ready to Merge"
+          hasAll: "Ready to Merge"
           githubToken: ${{ secrets.GITHUB_TOKEN }}
