@@ -4,7 +4,7 @@ on:
     types: [created]
 jobs:
   get-pr:
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '^/rebase') && github.event.issue.au
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase') && !contains(github.event.comment.user.login, '[bot]')
     name: Get PR Data
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +22,7 @@ jobs:
           github_token: ${{ steps.generate_token.outputs.token }}
           pull_number: ${{ github.event.issue.number }}
   rebase:
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '^/rebase') && needs.get-pr.steps.pr_data.outputs.state == 'opened'
+    if: needs.get-pr.steps.pr_data.outputs.state == 'opened'
     name: Rebase
     needs: get-pr
     runs-on: ubuntu-latest
