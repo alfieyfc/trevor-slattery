@@ -4,7 +4,7 @@ on:
     types: [created]
 jobs:
   rebase:
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase') && !contains(github.event.comment.user.login, '[bot]')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase') && !contains(github.event.comment.user.login, '[bot]') && steps.pr_data.outputs.state == 'open'
     name: Rebase
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +27,6 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        if: ${{ steps.pr_data.outputs.state == 'open' }}
         uses: cirrus-actions/rebase@1.4
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
