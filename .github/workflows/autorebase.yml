@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: On success
-        if: ${{ jobs.rebase.steps.pr_data.base_ref != 'main' }}
+        if: ${{ needs.rebase.steps.pr_data.base_ref != 'main' }}
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
