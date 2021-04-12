@@ -7,7 +7,7 @@ name: Pull Request updated
 jobs:
   release-history:
     if: startsWith(github.event.pull_request.head.ref, 'release/')
-    name: Pull Request Body
+    name: Release History
     runs-on: ubuntu-latest
     steps:
       - name: Pull Request Body
