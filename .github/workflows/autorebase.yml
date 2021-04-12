@@ -21,6 +21,10 @@ jobs:
         with:
           github_token: ${{ steps.generate_token.outputs.token }}
           pull_number: ${{ github.event.issue.number }}
+    outputs:
+      head_ref: ${{ steps.pr_data.outputs.head_ref }}
+      base_ref: ${{ steps.pr_data.outputs.base_ref }}
+      state: ${{ steps.pr_data.outputs.state }}
   rebase:
     needs: get-pr
     name: Rebase
@@ -38,7 +42,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        if: needs.get-pr.steps.pr_data.outputs.state == 'open'
+        if: needs.get-pr.outputs.state == 'open'
         uses: cirrus-actions/rebase@1.4
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
@@ -48,10 +52,10 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
-            Auto rebase failed! Please try rebasing in your local environment and force push to ${{ needs.get-pr.steps.pr_data.outputs.head_ref }}.
+            Auto rebase failed! Please try rebasing in your local environment and force push to ${{ needs.get-pr.outputs.head_ref }}.
             ```bash
             git fetch
-            git checkout ${{ needs.get-pr.steps.pr_data.outputs.head_ref }}
+            git checkout ${{ needs.get-pr.outputs.head_ref }}
             git rebase origin/release/0413
             ## Resolve conflicts if necessary
             git push --force
@@ -62,5 +66,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
-            ${{ needs.get-pr.steps.pr_data.outputs.head_ref }} is up to date!
+            ${{ needs.get-pr.outputs.head_ref }} is up to date!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
