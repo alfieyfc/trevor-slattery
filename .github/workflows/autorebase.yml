@@ -27,6 +27,7 @@ jobs:
       state: ${{ steps.pr_data.outputs.state }}
   rebase:
     needs: get-pr
+    if: needs.get-pr.outputs.state == 'open'
     name: Rebase
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +43,6 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
-        if: needs.get-pr.outputs.state == 'open'
         uses: cirrus-actions/rebase@1.4
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
@@ -68,3 +68,21 @@ jobs:
           message: |
             ${{ needs.get-pr.outputs.head_ref }} is up to date!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
+  invalid:
+    needs: get-pr
+    if: needs.get-pr.outputs.state == 'closed'
+    name: Not Attempting to Rebase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.KILLIAN_ID }}
+          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Comment
+        uses: allthatjazzleo/actions-pull-request-add-comment@master
+        with:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          message: |
+            This PR was closed. Please reopen or create another PR before the attempt of rebasing ${{ needs.get-pr.outputs.head_ref }}.
