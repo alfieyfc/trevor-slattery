@@ -20,6 +20,7 @@ jobs:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       - name: Automatic Rebase
+        if: github.event.issue.pull_request != ''
         uses: cirrus-actions/rebase@1.4
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
@@ -43,7 +44,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: On success
-        if: ${{ github.event.issue.pull_request.base.ref != 'main' }}
+        if: ${{ github.event.issue.pull_request != 'main' }}
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
