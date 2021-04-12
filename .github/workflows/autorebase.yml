@@ -14,15 +14,6 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
-      - name: Checkout the latest code
-        uses: actions/checkout@v2
-        with:
-          token: ${{ steps.generate_token.outputs.token }}
-          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
-      - name: Automatic Rebase
-        uses: cirrus-actions/rebase@1.4
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Get Pull Request Data
         if: always()
         id: pr_data
@@ -30,6 +21,16 @@ jobs:
         with:
           github_token: ${{ steps.generate_token.outputs.token }}
           pull_number: ${{ github.event.issue.number }}
+      - name: Checkout the latest code
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.pr_data.outputs.head_ref }}
+          token: ${{ steps.generate_token.outputs.token }}
+          fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+      - name: Automatic Rebase
+        uses: cirrus-actions/rebase@1.4
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       - name: Instructions when failing
         if: failure()
         uses: github-actions-up-and-running/pr-comment@v1.0.1
