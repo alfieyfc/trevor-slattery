@@ -22,7 +22,7 @@ jobs:
           github_token: ${{ steps.generate_token.outputs.token }}
           pull_number: ${{ github.event.issue.number }}
   rebase:
-    if: needs.get-pr.steps.pr_data.outputs.state == 'opened'
+    if: needs.get-pr.steps.pr_data.outputs.state == 'open'
     name: Rebase
     needs: get-pr
     runs-on: ubuntu-latest
