@@ -35,7 +35,7 @@ jobs:
         if: failure()
         uses: allthatjazzleo/actions-pull-request-add-comment@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
             Auto rebase failed! Please try rebasing in your local environment and force push to ${{ steps.pr_data.outputs.head_ref }}.
             ```bash
@@ -54,7 +54,7 @@ jobs:
         if: ${{ needs.rebase.steps.pr_data.outputs.base_ref != 'main' }}
         uses: allthatjazzleo/actions-pull-request-add-comment@master
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
             ${{ needs.rebase.steps.pr_data.outputs.head_ref }} is up to date!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
