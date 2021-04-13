@@ -9,8 +9,11 @@ categories:
       - "fix"
       - "bugfix"
       - "bug"
+      - "hotfix"
   - title: "🧰 Maintenance"
-    label: "chore"
+    labels:
+      - "chore"
+      - "documentation"
 
 change-template: "- $TITLE (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
@@ -20,3 +23,22 @@ template: |
   ## Changes
 
   $CHANGES
+
+autolabeler:
+  - label: "documentation"
+    branch:
+      - '/docs\/.+/'
+      - '/doc\/.+/'
+  - label: "bug"
+    branch:
+      - '/fix\/.+/'
+      - '/hotfix\/.+/'
+  - label: "feature"
+    branch:
+      - '/feature\/.+/'
+      - '/feat\/.+/'
+  - label: "enhancement"
+    branch:
+      - '/enhance\/.+/'
+      - '/enhancement\/.+/'
+      - '/enh\/.+/'
