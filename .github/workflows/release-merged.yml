@@ -10,7 +10,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   create-pr-to-default:
-    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref != main }}
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref != 'main' }}
     name: Create PR to default branch
     runs-on: ubuntu-latest
     steps:
