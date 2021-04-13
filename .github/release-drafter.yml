@@ -2,21 +2,21 @@ name-template: "DRAFT"
 categories:
   - title: "🚀 Features"
     labels:
-      - "feature"
-      - "enhancement"
+      - "type: feature"
+      - "type: enhancement"
   - title: "🐛 Bug Fixes"
     labels:
-      - "fix"
-      - "bugfix"
-      - "bug"
-      - "hotfix"
+      - "type: fix"
+      - "type: bugfix"
+      - "type: bug"
+      - "type: hotfix"
   - title: "🧰 Chores"
     labels:
-      - "chore"
-      - "documentation"
+      - "type: chore"
+      - "type: documentation"
   - title: "Misc."
     labels:
-      - "misc"
+      - "type: misc"
 
 change-template: "- $TITLE (#$NUMBER)"
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
