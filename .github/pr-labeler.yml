@@ -3,3 +3,4 @@ enhancement: ["enhancement/*", "enhance/*", "enh/*"]
 fix: ["fix/*", "hotfix/*"]
 chore: chore/*
 documentation: ["doc/*", "docs/*"]
+"type: release": ["release/*", "rel/*"]
