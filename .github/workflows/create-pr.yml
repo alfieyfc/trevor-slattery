@@ -48,13 +48,8 @@ jobs:
               - 1 or more reviews have approved
               - the label ![`Ready to Merge`](https://img.shields.io/badge/-Ready%20to%20Merge-success) is applied
             - In case the PR's head branch: `${{ github.event.pull_request.head.ref }}` is not up-to-date with its base: `${{ github.event.pull_request.base.ref }}`, you may trigger an auto-rebase by commenting `/rebase`
-  label-misc:
-    if: github.event.pull_request.labels[0] == null # if no label has been applied
-    needs: enable-automations
-    name: Label misc
-    runs-on: ubuntu-latest
-    steps:
       - name: Label Misc
+        if: github.event.pull_request.labels.*.name[0] == null # if no label has been applied
         uses: buildsville/add-remove-label@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
