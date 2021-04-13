@@ -23,22 +23,3 @@ template: |
   ## Changes
 
   $CHANGES
-
-autolabeler:
-  - label: "documentation"
-    branch:
-      - '/docs\/.+/'
-      - '/doc\/.+/'
-  - label: "bug"
-    branch:
-      - '/fix\/.+/'
-      - '/hotfix\/.+/'
-  - label: "feature"
-    branch:
-      - '/feature\/.+/'
-      - '/feat\/.+/'
-  - label: "enhancement"
-    branch:
-      - '/enhance\/.+/'
-      - '/enhancement\/.+/'
-      - '/enh\/.+/'
