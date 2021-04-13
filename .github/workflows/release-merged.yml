@@ -43,4 +43,4 @@ jobs:
         uses: release-drafter/release-drafter@v5.15.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          RELEASE_NAME: ${{ ${{ github.event.pull_request.base.ref }}
+          RELEASE_NAME: ${{ github.event.pull_request.base.ref }}
