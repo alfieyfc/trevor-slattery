@@ -49,7 +49,7 @@ jobs:
         with:
           token: ${{secrets.GITHUB_TOKEN}}
           label: misc
-          type: remove
+          type: add
   release-history:
     if: startsWith(github.event.pull_request.head.ref, 'release/')
     name: Release History
