@@ -44,7 +44,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Label Misc
-        if: ${{ github.event.pull_request.labels.length == 0 }}
+        if: ${{ github.event.pull_request.labels.length == null }}
         uses: buildsville/add-remove-label@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
