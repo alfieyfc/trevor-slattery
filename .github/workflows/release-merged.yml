@@ -36,7 +36,7 @@ jobs:
             <!-- END pr-commits -->
           github_token: ${{ steps.generate_token.outputs.token }}
   update-release-draft:
-    if: github.event.pull_request.head.ref != 'release/*'
+    if: github.event.pull_request.head.ref != 'release/*' && github.event.pull_request.merged == true
     name: Update Release Draft
     runs-on: ubuntu-latest
     steps:
