@@ -1,6 +1,7 @@
-feature: ["feature/*", "feat/*"]
-enhancement: ["enhancement/*", "enhance/*", "enh/*"]
-fix: ["fix/*", "hotfix/*"]
-chore: chore/*
-documentation: ["doc/*", "docs/*"]
+"type: feature": ["feature/*", "feat/*"]
+"type: enhancement": ["enhancement/*", "enhance/*", "enh/*"]
+"type: fix": ["fix/*", "bugfix/*"]
+"type: hotfix": "hotfix/*"
+"type: chore": chore/*
+"type: documentation": ["doc/*", "docs/*"]
 "type: release": ["release/*", "rel/*"]
