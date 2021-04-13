@@ -43,6 +43,13 @@ jobs:
         uses: TimonVS/pr-labeler-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Label Misc
+        if: ${{ github.event.pull_request.labels == null }}
+        uses: buildsville/add-remove-label@v1
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          label: misc
+          type: remove
   release-history:
     if: startsWith(github.event.pull_request.head.ref, 'release/')
     name: Release History
