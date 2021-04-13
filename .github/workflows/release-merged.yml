@@ -36,10 +36,11 @@ jobs:
             <!-- END pr-commits -->
           github_token: ${{ steps.generate_token.outputs.token }}
   update-release-draft:
-    name: Update Release Drat
+    name: Update Release Draft
     runs-on: ubuntu-latest
     steps:
-    - name: Release Drafter
-      uses: release-drafter/release-drafter@v5.15.0
-      env:
+      - name: Release Drafter
+        uses: release-drafter/release-drafter@v5.15.0
+        env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_NAME: ${{ ${{ github.event.pull_request.base.ref }}
