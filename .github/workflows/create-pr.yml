@@ -51,7 +51,7 @@ jobs:
   label-misc:
     if: github.event.pull_request.labels[0] == null # if no label has been applied
     needs: enable-automations
-    name: Release History
+    name: Label misc
     runs-on: ubuntu-latest
     steps:
       - name: Label Misc
