@@ -4,13 +4,13 @@ name: Release Branch Merged
 on:
   # Triggers the workflow on push or pull request events
   pull_request:
-    branches: [release/*]
+    branches: [release/*, main]
     types: [closed]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   create-pr-to-default:
-    if: ${{ github.event.pull_request.merged == true }}
+    if: ${{ github.event.pull_request.merged == true && github.event.pull_request.base.ref != main }}
     name: Create PR to default branch
     runs-on: ubuntu-latest
     steps:
