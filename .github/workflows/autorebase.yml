@@ -55,7 +55,7 @@ jobs:
       # Attempt to rebase
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
-        with:
+        env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment when rebase fails
       - if: failure()
