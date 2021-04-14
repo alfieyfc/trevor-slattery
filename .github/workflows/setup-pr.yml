@@ -14,14 +14,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Re-Get Labels
+        id: get-label-arr
         run: |
           export LENGTH=$(curl -k \
           -H "Accept: application/vnd.github.inertia-preview+json" \
           -H "Authorization: token ${GITHUB_TOKEN}" \
           https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }} | jq '.labels | length')
+          echo "::set-output name=length::$(echo $LENGTH)"
       # Label misc if no label has been applied, typically only run after Setup PR
       - name: Label Misc
-        if: ${{ env.LENGTH == 0 }}
+        if: ${{ steps.get-label-arr-length.outputs.length == 0 }}
         uses: buildsville/add-remove-label@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
