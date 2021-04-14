@@ -4,6 +4,16 @@ on:
   pull_request:
     types: [synchronize]
 jobs:
+  remove-ready:
+    runs-on: ubuntu-latest
+    steps:
+      # Changes made to head, should be reviewed again
+      - name: Not Ready to Merge
+        uses: buildsville/add-remove-label@v1
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          label: "status: ready to merge"
+          type: remove
   release-history:
     # Runs only if head is release/*, typically means the base is main
     if: startsWith(github.event.pull_request.head.ref, 'release/')
