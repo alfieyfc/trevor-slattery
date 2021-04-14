@@ -33,7 +33,7 @@ jobs:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ outputs.token }}
       # Enable auto-merge if base != main
       - if: github.event.pull_request.base.ref != 'main'
         name: Enable Pull Request Auto-Merge
@@ -81,7 +81,7 @@ jobs:
           app_id: ${{ secrets.RM_ID }}
           private_key: ${{ secrets.RM_PRIVATE_KEY }}
         env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ outputs.token }}
       # Update PR description with merge history
       - name: Pull Request Body
         uses: technote-space/pr-commit-body-action@v1
