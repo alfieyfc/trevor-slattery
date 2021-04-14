@@ -1,7 +1,24 @@
 "type: feature": ["feature/*", "feat/*"]
-"type: enhancement": ["enhancement/*", "enhance/*", "enh/*"]
-"type: fix": ["fix/*", "bugfix/*"]
-"type: hotfix": "hotfix/*"
+"type: enhancement":
+  - "enhancement/*"
+  - "enhance/*"
+  - "enhan/*"
+  - "enh/*"
+"type: fix":
+  - "fix/*"
+  - "fixes/*"
+  - "bugfix/*"
+  - "bugfixes/*"
+"type: hotfix":
+  - "hotfix/*"
+  - "hotfixes/*"
+  - "hot/*"
 "type: chore": chore/*
-"type: documentation": ["doc/*", "docs/*"]
+"type: documentation":
+  - "doc/*"
+  - "docs/*"
+  - "documentation/*"
+  - "documentations/*"
+  - "document/*"
+  - "documents/*"
 "type: release": ["release/*", "rel/*"]
