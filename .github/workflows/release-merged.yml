@@ -41,9 +41,16 @@ jobs:
     name: Update Release Draft
     runs-on: ubuntu-latest
     steps:
+      # Token for Release Master
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.RM_ID }}
+          private_key: ${{ secrets.RM_PRIVATE_KEY }}
       # Update release draft with merge history
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5.15.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           RELEASE_NAME: ${{ github.event.pull_request.base.ref }}
