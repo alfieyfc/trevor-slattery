@@ -4,6 +4,18 @@ on:
   issue_comment:
     types: [created]
 jobs:
+  # Label misc if no label has been applied, typically only run after Setup PR
+  auto-label-misc:
+    if: "!contains(github.event.issue.labels.*.name , 'type: ')"
+    name: Label PR with misc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Label Misc
+        uses: buildsville/add-remove-label@v1
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          label: "type: misc"
+          type: add
   get-pr:
     # Runs if issue is a PR & comment contains text '/rebase' & is not commented by a bot
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase') && !contains(github.event.comment.user.login, '[bot]')
