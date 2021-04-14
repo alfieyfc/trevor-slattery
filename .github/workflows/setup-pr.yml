@@ -52,7 +52,7 @@ jobs:
         name: Instructions to Auto-Merge & Rebase
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ env.GITHUB_TOKEN }}
           message: |
             - This PR has auto-merge enabled but will only merge when both of below are true:
                 - 1 or more reviews have approved
@@ -63,7 +63,7 @@ jobs:
         name: Instructions to Rebase
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ env.GITHUB_TOKEN }}
           message: |
             - This PR intends to merge to `${{ github.event.pull_request.base.ref }}` hence should be extra protected and not have auto-merge enabled.
             - This PR may only merge when both of below are true:
