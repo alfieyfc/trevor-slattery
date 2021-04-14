@@ -4,8 +4,8 @@ on:
   pull_request:
     types: [opened, reopened]
 jobs:
-  enable-automations:
-    name: Enable Automations
+  enable-automation:
+    name: Enable Automation
     runs-on: ubuntu-latest
     steps:
       # Label PR by head branch's name
@@ -21,7 +21,7 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           label: "type: misc"
           type: add
-      # Enable automerge if base != main
+      # Enable auto-merge if base != main
       - if: github.event.pull_request.base.ref != 'main'
         name: Enable Pull Request Automerge
         uses: peter-evans/enable-pull-request-automerge@v1
@@ -38,18 +38,18 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            - This PR has automerge enabled but will only merge when both of below are true:
+            - This PR has auto-merge enabled but will only merge when both of below are true:
                 - 1 or more reviews have approved
                 - the label ![`status: ready to merge`](https://img.shields.io/badge/-Ready%20to%20Merge-success) is applied
             - In case the PR's head branch: `${{ github.event.pull_request.head.ref }}` is not up-to-date with its base: `${{ github.event.pull_request.base.ref }}`, you may trigger an auto-rebase by commenting `/rebase`
-      # Comment if automerge NOT enabled
+      # Comment if auto-merge NOT enabled
       - if: github.event.pull_request.base.ref == 'main'
         name: Instructions to Rebase
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            - This PR intends to merge to `${{ github.event.pull_request.base.ref }}` hence should be extra protected and not have automerge enabled.
+            - This PR intends to merge to `${{ github.event.pull_request.base.ref }}` hence should be extra protected and not have auto-merge enabled.
             - This PR may only merge when both of below are true:
               - 1 or more reviews have approved
               - the label ![`status: ready to merge`](https://img.shields.io/badge/-Ready%20to%20Merge-success) is applied

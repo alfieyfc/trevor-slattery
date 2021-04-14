@@ -23,7 +23,6 @@ jobs:
         uses: actions/checkout@v2
       # Create PR (do nothing if already exists)
       - name: Create PR
-        id: cpr
         uses: repo-sync/pull-request@v2
         with:
           source_branch: ${{ github.event.pull_request.base.ref }}
