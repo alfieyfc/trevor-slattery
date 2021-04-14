@@ -25,6 +25,8 @@ jobs:
     name: Create PR to Default Branch
     runs-on: ubuntu-latest
     steps:
+      - name: print token
+        run: echo ${{ needs.gen-rm-token.outputs.rm_token }}
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v2
