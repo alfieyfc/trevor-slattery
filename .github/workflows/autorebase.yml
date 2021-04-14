@@ -60,9 +60,9 @@ jobs:
       # Comment when rebase fails
       - if: failure()
         name: On Failure
-        uses: github-actions-up-and-running/pr-comment@v1.0.1
+        uses: allthatjazzleo/actions-pull-request-add-comment@v1
         with:
-          repo-token: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
             Auto rebase failed! Please try rebasing in your local environment and force push to `${{ needs.get-pr.outputs.head_ref }}`.
             ```bash
@@ -75,9 +75,9 @@ jobs:
       # Comment when rebase succeeds
       - if: success()
         name: On Success
-        uses: github-actions-up-and-running/pr-comment@v1.0.1
+        uses: allthatjazzleo/actions-pull-request-add-comment@v1
         with:
-          repo-token: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
             `${{ needs.get-pr.outputs.head_ref }}` is up to date with `${{ needs.get-pr.outputs.base_ref }}`!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
@@ -97,12 +97,10 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment
       - name: Comment
-        uses: github-actions-up-and-running/pr-comment@v1.0.1
+        uses: allthatjazzleo/actions-pull-request-add-comment@v1
         with:
-          repo-token: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
           message: |
             This PR was closed. Please reopen or create another PR before the attempt of rebasing `${{ needs.get-pr.outputs.head_ref }}`.
