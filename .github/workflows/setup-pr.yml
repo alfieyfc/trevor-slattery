@@ -32,8 +32,10 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Set ENV
+        run: echo "Do nothing."
         env:
-          GITHUB_TOKEN: ${{ outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Enable auto-merge if base != main
       - if: github.event.pull_request.base.ref != 'main'
         name: Enable Pull Request Auto-Merge
@@ -80,6 +82,8 @@ jobs:
         with:
           app_id: ${{ secrets.RM_ID }}
           private_key: ${{ secrets.RM_PRIVATE_KEY }}
+      - name: Set ENV
+        run: echo "Do nothing."
         env:
           GITHUB_TOKEN: ${{ outputs.token }}
       # Update PR description with merge history
