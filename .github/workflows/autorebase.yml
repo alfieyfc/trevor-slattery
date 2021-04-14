@@ -11,19 +11,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # TODO: decide if this app should be Release Master, if not, what app should it be?
-      # Token for github app
+      # Set Github App Token for entire job
       - name: Generate Token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       #  Get PR information
       - name: Get Pull Request Data
         id: pr_data
         uses: simpleactions/get-pull-request@v1.0.0
         with:
-          github_token: ${{ steps.generate_token.outputs.token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           pull_number: ${{ github.event.issue.number }}
     # Sets job outputs for later jobs to reference
     outputs:
@@ -39,24 +41,24 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # TODO: decide if this app should be Release Master, if not, what app should it be?
-      # Token for github app
+      # Set Github App Token for entire job
       - name: Generate Token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ steps.generate_token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       # Attempt to rebase
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment when rebase fails
       - if: failure()
         name: On Failure
@@ -90,13 +92,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       # TODO: decide if this app should be Release Master, if not, what app should it be?
-      # Token for github app
+      # Set Github App Token for entire job
       - name: Generate token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment
       - name: Comment
         uses: github-actions-up-and-running/pr-comment@v1.0.1
