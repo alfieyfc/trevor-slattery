@@ -1,5 +1,6 @@
-name: Labels Check
+name: Check Labels
 on:
+  # Triggers the workflow when pull requests is labeled or unlabeled
   pull_request:
     types: [opened, labeled, unlabeled, synchronize]
 jobs:
@@ -7,8 +8,8 @@ jobs:
     name: Ready to Merge
     runs-on: ubuntu-latest
     steps:
+      # Check if label 'status: ready to merge' is applied
       - uses: danielchabr/pr-labels-checker@v3.0
-        id: checkLabel
         with:
           hasAll: "status: ready to merge"
           githubToken: ${{ secrets.GITHUB_TOKEN }}

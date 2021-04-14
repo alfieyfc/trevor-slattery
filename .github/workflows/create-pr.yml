@@ -1,34 +1,39 @@
 name: On PR Creation
-
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events
+  # Triggers the workflow when a PR is opened or reopened
   pull_request:
     types: [opened, reopened]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # Job "enable-auto-merge"
   enable-automations:
     name: Enable Automations
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      # Label PR by head branch's name
       - name: Auto Labeler
-        id: label
         uses: TimonVS/pr-labeler-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Enable Pull Request Automerge
-        if: ${{ github.event.pull_request.base.ref != 'main' }}
+      # Label misc if no label has been applied
+      - if: github.event.pull_request.labels.*.name[0] == null
+        name: Label Misc
+        uses: buildsville/add-remove-label@v1
+        with:
+          token: ${{secrets.GITHUB_TOKEN}}
+          label: "type: misc"
+          type: add
+      # Enable automerge if base != main
+      - if: github.event.pull_request.base.ref != 'main'
+        name: Enable Pull Request Automerge
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
+          # TODO: Update with Github App when supported
+          # Discussion at https://github.com/peter-evans/enable-pull-request-automerge/issues/68
           token: ${{ secrets.ALFIE_PAT }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: "REBASE"
-      - name: Instructions to Automerge & Rebase
-        if: ${{ github.event.pull_request.base.ref != 'main' }}
+      # Comment if automerge enabled
+      - if: github.event.pull_request.base.ref != 'main'
+        name: Instructions to Automerge & Rebase
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -37,8 +42,9 @@ jobs:
                 - 1 or more reviews have approved
                 - the label ![`status: ready to merge`](https://img.shields.io/badge/-Ready%20to%20Merge-success) is applied
             - In case the PR's head branch: `${{ github.event.pull_request.head.ref }}` is not up-to-date with its base: `${{ github.event.pull_request.base.ref }}`, you may trigger an auto-rebase by commenting `/rebase`
-      - name: Instructions to Rebase
-        if: ${{ github.event.pull_request.base.ref == 'main' }}
+      # Comment if automerge NOT enabled
+      - if: github.event.pull_request.base.ref == 'main'
+        name: Instructions to Rebase
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
@@ -48,17 +54,12 @@ jobs:
               - 1 or more reviews have approved
               - the label ![`status: ready to merge`](https://img.shields.io/badge/-Ready%20to%20Merge-success) is applied
             - In case the PR's head branch: `${{ github.event.pull_request.head.ref }}` is not up-to-date with its base: `${{ github.event.pull_request.base.ref }}`, you may trigger an auto-rebase by commenting `/rebase`
-      - name: Label Misc
-        if: github.event.pull_request.labels.*.name[0] == null # if no label has been applied
-        uses: buildsville/add-remove-label@v1
-        with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          label: "type: misc"
-          type: add
   release-history:
+    # Runs only if head is release/*, typically means the base is main
     if: startsWith(github.event.pull_request.head.ref, 'release/')
     name: Release History
     runs-on: ubuntu-latest
     steps:
+      # Update PR description with merge history
       - name: Pull Request Body
         uses: technote-space/pr-commit-body-action@v1
