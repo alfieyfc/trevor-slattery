@@ -99,6 +99,7 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Set ENV
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment
