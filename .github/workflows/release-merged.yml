@@ -1,45 +1,48 @@
 name: Release Branch Merged
-
-# Controls when the action will run.
 on:
-  # Triggers the workflow on push or pull request events
+  # Triggers the workflow when pull requests to release branch is closed
   pull_request:
     branches: [release/*]
     types: [closed]
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   create-pr-to-default:
-    if: ${{ github.event.pull_request.merged == true }}
-    name: Create PR to default branch
+    # Runs only if merged
+    if: github.event.pull_request.merged == true
+    name: Create PR to Default Branch
     runs-on: ubuntu-latest
     steps:
+      # Token for Release Master
       - name: Generate token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.RM_ID }}
           private_key: ${{ secrets.RM_PRIVATE_KEY }}
-      - name: checkout
+      # Checkout repo
+      - name: Checkout
         uses: actions/checkout@v2
+      # Create PR (do nothing if already exists)
       - name: Create PR
         id: cpr
         uses: repo-sync/pull-request@v2
         with:
           source_branch: ${{ github.event.pull_request.base.ref }}
-          destination_branch: "main" # If blank, default: master
-          pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main" # Title of pull request
-          # Full markdown support, requires pr_title to be set
+          # If blank, default: master
+          destination_branch: "main"
+          # Title of pull request, required if pr_body is desired to set
+          pr_title: "Pulling ${{ github.event.pull_request.base.ref }} into main"
           pr_body: |
             :crown: *An automated PR*
             <!-- START pr-commits -->
             <!-- END pr-commits -->
           github_token: ${{ steps.generate_token.outputs.token }}
   update-release-draft:
-    if: github.event.pull_request.head.ref != 'release/*' && github.event.pull_request.merged == true
+    # Runs only if merged
+    if: github.event.pull_request.merged == true
     name: Update Release Draft
     runs-on: ubuntu-latest
     steps:
+      # Update release draft with merge history
       - name: Release Drafter
         uses: release-drafter/release-drafter@v5.15.0
         env:
