@@ -7,6 +7,15 @@ jobs:
   remove-ready:
     runs-on: ubuntu-latest
     steps:
+      # - name: Debug workflow functions
+      #   if: always()
+      #   run: |
+      #     echo ${{ join(github.event.pull_request.labels.*.name) }}
+      #     echo
+      # - name: Debug workflow condition
+      #   if: join(github.event.pull_request.labels.*.name) == ''
+      #   run: |
+      #     echo "join(github.event.pull_request.labels.*.name) == ''"
       # Changes made to head, should be reviewed again
       - name: Not Ready to Merge
         uses: buildsville/add-remove-label@v1
