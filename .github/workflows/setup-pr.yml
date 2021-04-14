@@ -13,19 +13,6 @@ jobs:
         uses: TimonVS/pr-labeler-action@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      # Label misc if no label has been applied
-  auto-label-misc:
-    needs: auto-label
-    if: join(github.event.pull_request.labels.*.name) == ''
-    name: Label PR with misc
-    runs-on: ubuntu-latest
-    steps:
-      - name: Label Misc
-        uses: buildsville/add-remove-label@v1
-        with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          label: "type: misc"
-          type: add
   enable-auto-merge:
     name: Enable Auto-Merge
     runs-on: ubuntu-latest
