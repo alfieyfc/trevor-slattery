@@ -19,7 +19,7 @@ jobs:
           export LENGTH=$(curl -k \
           -H "Accept: application/vnd.github.inertia-preview+json" \
           -H "Authorization: token ${GITHUB_TOKEN}" \
-          https://api.github.com/repos/${GITHUB_REPOSITORY}/pulls/${{ github.event.pull_request.number }} | jq '.labels | length')
+          https://api.github.com/repos/${{ env.GITHUB_REPOSITORY }}/pulls/${{ github.event.pull_request.number }} | jq '.labels | length')
           echo "::set-output name=length::$(echo $LENGTH)"
       # Label misc if no label has been applied, typically only run after Setup PR
       - name: Label Misc
