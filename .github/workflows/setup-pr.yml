@@ -34,6 +34,7 @@ jobs:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       - name: Set ENV
+        run: echo "set env"
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Enable auto-merge if base != main
