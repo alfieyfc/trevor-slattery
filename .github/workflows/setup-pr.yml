@@ -85,7 +85,7 @@ jobs:
       - name: Set ENV
         run: echo "Do nothing."
         env:
-          GITHUB_TOKEN: ${{ outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Update PR description with merge history
       - name: Pull Request Body
         uses: technote-space/pr-commit-body-action@v1
