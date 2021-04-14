@@ -12,7 +12,7 @@ jobs:
     steps:
       # TODO: decide if this app should be Release Master, if not, what app should it be?
       # Token for github app
-      - name: Generate token
+      - name: Generate Token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
@@ -20,7 +20,6 @@ jobs:
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       #  Get PR information
       - name: Get Pull Request Data
-        if: always()
         id: pr_data
         uses: simpleactions/get-pull-request@v1.0.0
         with:
@@ -41,14 +40,14 @@ jobs:
     steps:
       # TODO: decide if this app should be Release Master, if not, what app should it be?
       # Token for github app
-      - name: Generate token
+      - name: Generate Token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       # Checkout repo
-      - name: Checkout the latest code
+      - name: Checkout
         uses: actions/checkout@v2
         with:
           token: ${{ steps.generate_token.outputs.token }}
@@ -59,8 +58,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment when rebase fails
-      - name: Instructions when failing
-        if: failure()
+      - if: failure()
+        name: On Failure
         uses: allthatjazzleo/actions-pull-request-add-comment@master
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
@@ -74,8 +73,8 @@ jobs:
             git push --force-with-lease
             ```
       # Comment when rebase succeeds
-      - name: On success
-        if: success()
+      - if: success()
+        name: On Success
         uses: allthatjazzleo/actions-pull-request-add-comment@master
         with:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
