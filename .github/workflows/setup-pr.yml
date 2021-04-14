@@ -25,6 +25,17 @@ jobs:
     name: Enable Auto-Merge
     runs-on: ubuntu-latest
     steps:
+      # TODO: decide if this app should be Release Master, if not, what app should it be?
+      # Token for github app
+      - name: Generate token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.KILLIAN_ID }}
+          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Set ENV
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Enable auto-merge if base != main
       - if: github.event.pull_request.base.ref != 'main'
         name: Enable Pull Request Auto-Merge
