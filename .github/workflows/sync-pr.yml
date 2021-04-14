@@ -7,11 +7,13 @@ jobs:
   remove-ready:
     runs-on: ubuntu-latest
     steps:
-      # - name: Debug workflow functions
-      #   if: always()
-      #   run: |
-      #     echo ${{ join(github.event.pull_request.labels.*.name) }}
-      #     echo
+      - name: Debug workflow functions
+        if: always()
+        run: |
+          curl -k \
+          -H "Accept: application/vnd.github.inertia-preview+json" \
+          -H "Authorization: token $GITHUB_TOKEN" \
+          https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/${{ github.event.pull_request.number }}
       # - name: Debug workflow condition
       #   if: join(github.event.pull_request.labels.*.name) == ''
       #   run: |
