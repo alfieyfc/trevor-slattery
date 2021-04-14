@@ -10,53 +10,52 @@ jobs:
     name: Get PR Data
     runs-on: ubuntu-latest
     steps:
-      # TODO: decide if this app should be Release Master, if not, what app should it be?
-      # Token for github app
-      - name: Generate Token
-        id: generate_token
-        uses: tibdex/github-app-token@v1
-        with:
-          app_id: ${{ secrets.KILLIAN_ID }}
-          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       #  Get PR information
       - name: Get Pull Request Data
         id: pr_data
         uses: simpleactions/get-pull-request@v1.0.0
         with:
-          github_token: ${{ steps.generate_token.outputs.token }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           pull_number: ${{ github.event.issue.number }}
     # Sets job outputs for later jobs to reference
     outputs:
       head_ref: ${{ steps.pr_data.outputs.head_ref }}
       base_ref: ${{ steps.pr_data.outputs.base_ref }}
       state: ${{ steps.pr_data.outputs.state }}
-  rebase:
-    # Requires previous job 'get-pr' to complete and succeed
+  gen-aa-token:
+    name: Generate Automation Agent Token
     needs: get-pr
-    # Runs if PR state is open
-    if: needs.get-pr.outputs.state == 'open'
-    name: Rebase
     runs-on: ubuntu-latest
     steps:
       # TODO: decide if this app should be Release Master, if not, what app should it be?
-      # Token for github app
-      - name: Generate Token
+      # Token for Release Master
+      - name: Generate token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+    outputs:
+      aa_token: ${{ steps.generate_token.outputs.token }}
+  rebase:
+    # Requires previous jobs to complete and succeed
+    needs: [get-pr, gen-aa-token]
+    # Runs if PR state is open
+    if: needs.get-pr.outputs.state == 'open'
+    name: Rebase
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ needs.gen-aa-token.outputs.aa_token }}
+    steps:
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ steps.generate_token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       # Attempt to rebase
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment when rebase fails
       - if: failure()
         name: On Failure
@@ -82,21 +81,15 @@ jobs:
             `${{ needs.get-pr.outputs.head_ref }}` is up to date with `${{ needs.get-pr.outputs.base_ref }}`!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
   invalid:
-    # Requires previous job 'get-pr' to complete and succeed
-    needs: get-pr
+    # Requires previous jobs to complete and succeed
+    needs: [get-pr, gen-aa-token]
     # Runs if PR state is closed
     if: needs.get-pr.outputs.state == 'closed'
     name: Not Attempting to Rebase
     runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ needs.gen-aa-token.outputs.aa_token }}
     steps:
-      # TODO: decide if this app should be Release Master, if not, what app should it be?
-      # Token for github app
-      - name: Generate token
-        id: generate_token
-        uses: tibdex/github-app-token@v1
-        with:
-          app_id: ${{ secrets.KILLIAN_ID }}
-          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
       # Comment
       - name: Comment
         uses: github-actions-up-and-running/pr-comment@v1.0.1
