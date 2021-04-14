@@ -1,4 +1,4 @@
-name: Automatic Rebase
+name: New Comment
 on:
   # Triggers the workflow when a comment is created
   issue_comment:
