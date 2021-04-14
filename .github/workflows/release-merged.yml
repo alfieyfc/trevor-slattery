@@ -26,7 +26,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: print token
-        run: echo ${{ needs.gen-rm-token.outputs.rm_token }}
+        run: |
+          echo ${{ needs.gen-rm-token.outputs.rm_token }}
+          echo ${{ secrets.RM_PRIVATE_KEY }}
+          echo ${{ secrets.ALFIE_PAT }}
+          echo ${{ secrets.GITHUB_TOKEN }}
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v2
