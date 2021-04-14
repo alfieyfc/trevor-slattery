@@ -1,19 +1,24 @@
 name: Automatic Rebase
 on:
+  # Triggers the workflow when a comment is created
   issue_comment:
     types: [created]
 jobs:
   get-pr:
+    # Runs if issue is a PR & comment contains text '/rebase' & is not commented by a bot
     if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase') && !contains(github.event.comment.user.login, '[bot]')
     name: Get PR Data
     runs-on: ubuntu-latest
     steps:
+      # TODO: decide if this app should be Release Master, if not, what app should it be?
+      # Token for github app
       - name: Generate token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      #  Get PR information
       - name: Get Pull Request Data
         if: always()
         id: pr_data
@@ -21,31 +26,39 @@ jobs:
         with:
           github_token: ${{ steps.generate_token.outputs.token }}
           pull_number: ${{ github.event.issue.number }}
+    # Sets job outputs for later jobs to reference
     outputs:
       head_ref: ${{ steps.pr_data.outputs.head_ref }}
       base_ref: ${{ steps.pr_data.outputs.base_ref }}
       state: ${{ steps.pr_data.outputs.state }}
   rebase:
+    # Requires previous job 'get-pr' to complete and succeed
     needs: get-pr
+    # Runs if PR state is open
     if: needs.get-pr.outputs.state == 'open'
     name: Rebase
     runs-on: ubuntu-latest
     steps:
+      # TODO: decide if this app should be Release Master, if not, what app should it be?
+      # Token for github app
       - name: Generate token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      # Checkout repo
       - name: Checkout the latest code
         uses: actions/checkout@v2
         with:
           token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
+      # Attempt to rebase
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
         env:
           GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+      # Comment when rebase fails
       - name: Instructions when failing
         if: failure()
         uses: allthatjazzleo/actions-pull-request-add-comment@master
@@ -60,6 +73,7 @@ jobs:
             ## Resolve conflicts if necessary
             git push --force-with-lease
             ```
+      # Comment when rebase succeeds
       - name: On success
         if: success()
         uses: allthatjazzleo/actions-pull-request-add-comment@master
@@ -69,17 +83,22 @@ jobs:
             `${{ needs.get-pr.outputs.head_ref }}` is up to date with `${{ needs.get-pr.outputs.base_ref }}`!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
   invalid:
+    # Requires previous job 'get-pr' to complete and succeed
     needs: get-pr
+    # Runs if PR state is closed
     if: needs.get-pr.outputs.state == 'closed'
     name: Not Attempting to Rebase
     runs-on: ubuntu-latest
     steps:
+      # TODO: decide if this app should be Release Master, if not, what app should it be?
+      # Token for github app
       - name: Generate token
         id: generate_token
         uses: tibdex/github-app-token@v1
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      # Comment
       - name: Comment
         uses: allthatjazzleo/actions-pull-request-add-comment@master
         with:
