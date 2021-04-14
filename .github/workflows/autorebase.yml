@@ -46,17 +46,18 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Set ENV
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ steps.generate_token.outputs.token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       # Attempt to rebase
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
-        env:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment when rebase fails
       - if: failure()
         name: On Failure
@@ -97,6 +98,9 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      - name: Set ENV
+        env:
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment
       - name: Comment
         uses: github-actions-up-and-running/pr-comment@v1.0.1
