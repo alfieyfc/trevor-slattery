@@ -23,7 +23,7 @@ jobs:
           echo "::set-output name=length::$(echo $LENGTH)"
       # Label misc if no label has been applied, typically only run after Setup PR
       - name: Label Misc
-        if: ${{ steps.get-label-arr-length.outputs.length == 0 }}
+        if: ${{ steps.get-label-arr.outputs.length == 0 }}
         uses: buildsville/add-remove-label@v1
         with:
           token: ${{secrets.GITHUB_TOKEN}}
