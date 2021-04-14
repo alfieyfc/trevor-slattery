@@ -1,11 +1,11 @@
-name: On PR Creation
+name: Setup PR
 on:
   # Triggers the workflow when a PR is opened or reopened
   pull_request:
-    types: [opened, reopened]
+    types: [opened, edited, reopened]
 jobs:
-  enable-automation:
-    name: Enable Automation
+  auto-label:
+    name: Label PR
     runs-on: ubuntu-latest
     steps:
       # Label PR by head branch's name
@@ -21,9 +21,13 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           label: "type: misc"
           type: add
+  enable-auto-merge:
+    name: Enable Auto-Merge
+    runs-on: ubuntu-latest
+    steps:
       # Enable auto-merge if base != main
       - if: github.event.pull_request.base.ref != 'main'
-        name: Enable Pull Request Automerge
+        name: Enable Pull Request Auto-Merge
         uses: peter-evans/enable-pull-request-automerge@v1
         with:
           # TODO: Update with Github App when supported
@@ -31,9 +35,9 @@ jobs:
           token: ${{ secrets.ALFIE_PAT }}
           pull-request-number: ${{ github.event.pull_request.number }}
           merge-method: "REBASE"
-      # Comment if automerge enabled
+      # Comment if auto-merge enabled
       - if: github.event.pull_request.base.ref != 'main'
-        name: Instructions to Automerge & Rebase
+        name: Instructions to Auto-Merge & Rebase
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
