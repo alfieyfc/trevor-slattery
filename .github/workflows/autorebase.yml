@@ -46,25 +46,23 @@ jobs:
         with:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
-        env:
-          GITHUB_TOKEN: ${{ outputs.token }}
       # Checkout repo
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ steps.generate_token.outputs.token }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       # Attempt to rebase
       - name: Automatic Rebase
         uses: cirrus-actions/rebase@1.4
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment when rebase fails
       - if: failure()
         name: On Failure
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ steps.generate_token.outputs.token }}
           message: |
             Auto rebase failed! Please try rebasing in your local environment and force push to `${{ needs.get-pr.outputs.head_ref }}`.
             ```bash
@@ -79,7 +77,7 @@ jobs:
         name: On Success
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ steps.generate_token.outputs.token }}
           message: |
             `${{ needs.get-pr.outputs.head_ref }}` is up to date with `${{ needs.get-pr.outputs.base_ref }}`!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
@@ -100,11 +98,11 @@ jobs:
           app_id: ${{ secrets.KILLIAN_ID }}
           private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
         env:
-          GITHUB_TOKEN: ${{ outputs.token }}
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
       # Comment
       - name: Comment
         uses: github-actions-up-and-running/pr-comment@v1.0.1
         with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          repo-token: ${{ steps.generate_token.outputs.token }}
           message: |
             This PR was closed. Please reopen or create another PR before the attempt of rebasing `${{ needs.get-pr.outputs.head_ref }}`.
