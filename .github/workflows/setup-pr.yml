@@ -2,7 +2,7 @@ name: Setup PR
 on:
   # Triggers the workflow when a PR is opened or reopened
   pull_request:
-    types: [opened, edited, reopened]
+    types: [opened, reopened]
 jobs:
   auto-label:
     name: Label PR
