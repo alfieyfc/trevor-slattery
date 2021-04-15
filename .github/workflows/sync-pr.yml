@@ -5,19 +5,10 @@ on:
     types: [synchronize]
 jobs:
   remove-ready:
+    # Runs only if event it synchronize
+    name: Remove Ready-to-Merge Label
     runs-on: ubuntu-latest
     steps:
-      # - name: Debug workflow functions
-      #   if: always()
-      #   run: |
-      #     curl -k \
-      #     -H "Accept: application/vnd.github.inertia-preview+json" \
-      #     -H "Authorization: token ${{ secrets.ALFIE_PAT }}" \
-      #     https://api.github.com/repos/$GITHUB_REPOSITORY/pulls/${{ github.event.pull_request.number }}
-      # - name: Debug workflow condition
-      #   if: join(github.event.pull_request.labels.*.name) == ''
-      #   run: |
-      #     echo "join(github.event.pull_request.labels.*.name) == ''"
       # Changes made to head, should be reviewed again
       - name: Not Ready to Merge
         uses: buildsville/add-remove-label@v1
