@@ -36,6 +36,18 @@ jobs:
           token: ${{secrets.GITHUB_TOKEN}}
           label: "type: misc"
           type: add
+      - if: startsWith(github.event.pull_request.head.ref, 'release/')
+        name: Assign Project - head is release
+        uses: technote-space/create-project-card-action@v1
+        with:
+          PROJECT: ${{ github.event.pull_request.head.ref }}
+          COLUMN: In progress
+      - if: startsWith(github.event.pull_request.base.ref, 'release/')
+        name: Assign Project - base is release
+        uses: technote-space/create-project-card-action@v1
+        with:
+          PROJECT: ${{ github.event.pull_request.base.ref }}
+          COLUMN: In progress
   enable-auto-merge:
     name: Enable Auto-Merge
     runs-on: ubuntu-latest
