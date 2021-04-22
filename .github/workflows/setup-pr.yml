@@ -42,12 +42,18 @@ jobs:
         with:
           PROJECT: ${{ github.event.pull_request.head.ref }}
           COLUMN: In progress
+          ## Uncomment for org
+          # CHECK_ORG_PROJECT: true
+          # GITHUB_TOKEN: ${{ secrets.ALFIE_PAT }}
       - if: startsWith(github.event.pull_request.base.ref, 'release/')
         name: Assign Project - base is release
         uses: technote-space/create-project-card-action@v1
         with:
           PROJECT: ${{ github.event.pull_request.base.ref }}
           COLUMN: In progress
+          ## Uncomment for org
+          # CHECK_ORG_PROJECT: true
+          # GITHUB_TOKEN: ${{ secrets.ALFIE_PAT }}
   enable-auto-merge:
     name: Enable Auto-Merge
     runs-on: ubuntu-latest
