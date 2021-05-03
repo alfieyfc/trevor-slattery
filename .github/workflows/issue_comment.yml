@@ -6,7 +6,7 @@ on:
 jobs:
   get-pr:
     # Runs if issue is a PR & comment contains text '/rebase' & is not commented by a bot
-    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, '/rebase') && !contains(github.event.comment.user.login, '[bot]')
+    if: github.event.issue.pull_request != '' && contains(github.event.comment.body, 'call killian') && !contains(github.event.comment.user.login, '[bot]')
     name: Get PR Data
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +23,7 @@ jobs:
         id: pr_data
         uses: simpleactions/get-pull-request@v1.0.0
         with:
-          github_token: ${{ steps.generate_token.outputs.token }}
+          github_token: ${{ secrets.KILLIAN_TOKEN }}
           pull_number: ${{ github.event.issue.number }}
     # Sets job outputs for later jobs to reference
     outputs:
@@ -50,7 +50,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ steps.generate_token.outputs.token }}
+          token: ${{ secrets.KILLIAN_TOKEN }}
           fetch-depth: 0 # otherwise, you will fail to push refs to dest repo
       # Attempt to rebase
       - name: Automatic Rebase
@@ -77,7 +77,7 @@ jobs:
         name: On Success
         uses: allthatjazzleo/actions-pull-request-add-comment@v1
         with:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.KILLIAN_TOKEN }}
           message: |
             `${{ needs.get-pr.outputs.head_ref }}` is up to date with `${{ needs.get-pr.outputs.base_ref }}`!
             > As a gentle reminder, if there were conflicts at the time of creating this PR, you may have to enable auto-merge by clicking the ![](https://img.shields.io/badge/-Enable%20auto--merge%20(rebase)-lightgrey) button manually.
@@ -101,6 +101,6 @@ jobs:
       - name: Comment
         uses: allthatjazzleo/actions-pull-request-add-comment@v1
         with:
-          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
+          GITHUB_TOKEN: ${{ secrets.KILLIAN_TOKEN }}
           message: |
             This PR was closed. Please reopen or create another PR before the attempt of rebasing `${{ needs.get-pr.outputs.head_ref }}`.
