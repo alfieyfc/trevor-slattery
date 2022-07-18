@@ -1,0 +1,17 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Push GH Context
+# change this to the event type you want to get the data for
+on:
+  push:
+
+jobs:
+  printJob:
+    name: Print event
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
