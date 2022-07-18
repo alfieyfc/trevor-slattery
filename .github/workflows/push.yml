@@ -4,14 +4,36 @@ name: Push GH Context
 # change this to the event type you want to get the data for
 on:
   push:
-
+    branches:
+      - 'new/test'
 jobs:
-  printJob:
-    name: Print event
+  create-pr:
+    # Runs only if the branch is newly pushed to github
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' }}
+    name: Create PR
     runs-on: ubuntu-latest
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: |
-          echo "$GITHUB_CONTEXT"
+      # Token for github app
+      - name: Generate Token
+        id: generate_token
+        uses: tibdex/github-app-token@v1
+        with:
+          app_id: ${{ secrets.KILLIAN_ID }}
+          private_key: ${{ secrets.KILLIAN_PRIVATE_KEY }}
+      # Checkout repo
+      - name: Checkout
+        uses: actions/checkout@v2
+      # Create PR (do nothing if already exists)
+      - name: Create PR to Default Branch
+        uses: repo-sync/pull-request@v2
+        with:
+          source_branch: 'new/test'
+          # If blank, default: master
+          destination_branch: 'main'
+          # Title of pull request, required if pr_body is desired to set
+          pr_title: 'New/test: Update'
+          pr_body: |
+            :crown: *An automated PR*
+            <!-- START pr-commits -->
+            <!-- END pr-commits -->
+          GITHUB_TOKEN: ${{ steps.generate_token.outputs.token }}
