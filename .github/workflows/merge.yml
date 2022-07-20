@@ -25,3 +25,8 @@ jobs:
         run: |-
           echo "::set-output name=short_sha::$(cut -c 1-7 <<< ${{ github.event.pull_request.head.sha }})"
           echo "::set-output name=branch::$(sed "s/\\//-/g" <<< ${{ github.event.pull_request.head.ref }})"
+      - id: print-vars
+        name: Print variables
+        run: |-
+          echo ${{ steps.vars.outputs.short_sha }}
+          echo ${{ steps.vars.outputs.branch }}
