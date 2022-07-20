@@ -20,3 +20,8 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: |
           echo "$GITHUB_CONTEXT"
+      - id: vars
+        name: Set variables
+        run: |-
+          echo "::set-output name=short_sha::$(cut -c 1-7 <<< ${{ github.event.pull_request.head.sha }})"
+          echo "::set-output name=branch::$(sed "s/\\//-/g" <<< ${{ github.event.pull_request.head.ref }})"
