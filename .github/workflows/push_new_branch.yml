@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Push GH Context
+name: Push New Test Branch
 # change this to the event type you want to get the data for
 on:
   push:
