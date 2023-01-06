@@ -40,7 +40,9 @@ jobs:
           --reporter-cli-no-failures --reporter-cli-no-assertions --reporter-cli-no-console --disable-unicode \
           | grep -A20 -m1 -- "----------" > summary.txt
 
-        SUMMARY=$(cat summary.txt)
+        SUMMARY="\`\`\`\n"
+        SUMMARY=$SUMMARY$(cat summary.txt)
+        SUMMARY="$SUMMARY\n\`\`\`"
         echo "SUMMARY<<EOF" >> $GITHUB_ENV
         echo "$SUMMARY" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
