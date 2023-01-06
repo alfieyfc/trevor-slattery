@@ -1,0 +1,56 @@
+name: Slack
+
+on:
+  workflow_dispatch:
+
+jobs:
+  SendSlackMsg:
+    runs-on: ubuntu-latest
+    name: "Send Slack Message"
+    steps:
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+    - name: "Create multiline string"
+      id: string
+      run: |
+        SUMMARY="\`\`\`"
+        SUMMARY=$SUMMARY$(cat << EOF
+          first line
+          second line
+          third line
+          EOF
+          )
+        SUMMARY="$SUMMARY\`\`\`"
+        echo "SUMMARY<<EOF" >> $GITHUB_ENV
+        echo "$SUMMARY" >> $GITHUB_ENV
+        echo "EOF" >> $GITHUB_ENV
+
+    - name: Send Newman Summary to Slack
+      id: slack
+      uses: slackapi/slack-github-action@v1.23.0
+      with:
+        payload: |
+          {
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "<@UFRJH9YGN> Summary"
+                }
+              },
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": ${{ toJSON(env.SUMMARY) }}
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
