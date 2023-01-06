@@ -1,57 +1,37 @@
 name: Slack
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 jobs:
   SendSlackMsg:
     runs-on: ubuntu-latest
     name: "Send Slack Message"
     steps:
-    # - name: "Run Postman Collection"
-    #   uses: matt-ball/newman-action@master
-    #   id: runNewman
-    #   with:
-    #     apiKey: "${{ secrets.POSTMAN_API_KEY }}"
-    #     collection: "24817054-471e9c76-18a3-40b3-a5da-8553bb99057a"
-    #     environment: "24914171-8f2fd227-5401-4275-9bbe-95ab680d1fd4"
-    #     color: "auto"
-    #     reporter: '{ "cli": { "export": "/tmp/newman/TEST-newman-report.txt" }}'
-    #     bail: true
-    - name: "Install Newman"
-      id: install
-      # with:
-      #   apiKey: "${{ secrets.POSTMAN_API_KEY }}"
-      #   # collection: "24817054-471e9c76-18a3-40b3-a5da-8553bb99057a"
-      #   collection: "24914171-4eb92ecc-7dd5-4e0c-90e8-131ef4fade9c"
-      #   environment: "24914171-8f2fd227-5401-4275-9bbe-95ab680d1fd4"
-      #   color: "on"
-      #   bail: true
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        sudo apt-get update && sudo apt-get install nodejs npm -y;
-        npm install -g newman;
-
-    - name: "Run Newman"
-      id: newman
+        echo "$GITHUB_CONTEXT"
+    - name: "Create multiline string"
+      id: string
       run: |
-        newman run https://api.getpostman.com/collections/24914171-4eb92ecc-7dd5-4e0c-90e8-131ef4fade9c?apikey=${{ secrets.POSTMAN_API_KEY }} \
-          --environment https://api.getpostman.com/environments/24914171-8f2fd227-5401-4275-9bbe-95ab680d1fd4?apikey=${{ secrets.POSTMAN_API_KEY }} \
-          --reporters cli \
-          --reporter-cli-no-failures --reporter-cli-no-assertions --reporter-cli-no-console --disable-unicode \
-          | grep -A20 -m1 -- "----------" > summary.txt
-
-        SUMMARY="\`\`\`\n"
-        SUMMARY=$SUMMARY$(cat summary.txt)
-        SUMMARY="$SUMMARY\n\`\`\`"
+        SUMMARY="\`\`\`"
+        SUMMARY=$SUMMARY$(cat << EOF
+          first line
+          second line
+          third line
+          EOF
+          )
+        SUMMARY="$SUMMARY\`\`\`"
         echo "SUMMARY<<EOF" >> $GITHUB_ENV
         echo "$SUMMARY" >> $GITHUB_ENV
         echo "EOF" >> $GITHUB_ENV
 
-    - name: Send custom JSON data to Slack workflow
+    - name: Send Newman Summary to Slack
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
       with:
-        # For posting a rich message using Block Kit
         payload: |
           {
             "blocks": [
@@ -59,7 +39,7 @@ jobs:
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "Postman Collection Summary"
+                  "text": "<@UFRJH9YGN> Summary"
                 }
               },
               {
