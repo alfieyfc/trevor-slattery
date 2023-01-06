@@ -1,0 +1,56 @@
+name: "Helm repo"
+on:
+  pull_request:
+
+jobs:
+
+  Push:
+    name: "Push to GCS"
+    runs-on: "ubuntu-latest"
+    permissions:
+      contents: "read"
+      id-token: "write"
+    steps:
+
+      - name: "Checkout"
+        id: checkout
+        uses: "actions/checkout@v2"
+        with:
+          fetch-depth: 2
+
+      - name: "Authenticate to Google Cloud"
+        id: authGCP
+        uses: "google-github-actions/auth@v0"
+        with:
+          workload_identity_provider: "projects/1081893824311/locations/global/workloadIdentityPools/gh-act-pool/providers/gh-act-prvdr"
+          service_account: "gh-actions@es-devsecops.iam.gserviceaccount.com"
+          create_credentials_file: true
+          export_environment_variables: true
+
+      - name: "Install Helm & plugins"
+        id: install
+        run: |
+          set -o errexit
+
+          HELM_VERSION=3.10.3
+          HELM_GCS_VERSION=0.4.0
+
+          echo "Installing Helm..."
+          wget -q https://get.helm.sh/helm-v${HELM_VERSION}-linux-amd64.tar.gz
+          tar -zxf helm-v${HELM_VERSION}-linux-amd64.tar.gz
+          sudo mv linux-amd64/helm /usr/local/bin/helm
+          helm version
+
+          echo "Installing helm-gcs plugin..."
+          helm plugin install https://github.com/hayorov/helm-gcs --version ${HELM_GCS_VERSION}
+
+
+      - name: "Release Charts"
+        id: releaseCharts
+        run: |
+          set -o errexit
+          set -o nounset
+          set -o pipefail
+
+          GCS_BUCKET_NAME="gs://easyship-charts"
+          helm repo add easyship ${GCS_BUCKET_NAME}
