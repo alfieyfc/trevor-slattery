@@ -20,7 +20,12 @@ jobs:
       name: "Checkout"
       uses: "actions/checkout@v3"
       with:
-        fetch-depth: 2
+        ref: ${{ github.event.pull_request.base.ref }}
+    - id: checkout
+      name: "Checkout"
+      uses: "actions/checkout@v3"
+      with:
+        ref: ${{ github.event.pull_request.head.ref }}
     - name: Dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
