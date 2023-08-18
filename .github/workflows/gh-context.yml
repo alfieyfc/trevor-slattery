@@ -1,13 +1,18 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Comment GH Context
+name: GH Context
 # change this to the event type you want to get the data for
 on:
   issue_comment:
     types: [created]
+  pull_request:
+    types:
+      - "opened"
+      - "reopened"
+      - "synchronize"
 
 jobs:
-  printJob:    
+  printJob:
     name: Print event
     runs-on: ubuntu-latest
     steps:
@@ -16,3 +21,11 @@ jobs:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
         echo "$GITHUB_CONTEXT"
+    - name: Dump PR event
+      if: ${{ github.event.pull_request }}
+      env:
+        GITHUB_CONTEXT: ${{ toJson(github) }}
+      run: |
+        echo "$GITHUB_CONTEXT"
+        echo "---"
+        echo "${{ github.event.pull_request.base.sha }}"
