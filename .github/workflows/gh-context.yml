@@ -28,9 +28,8 @@ jobs:
         echo "$GITHUB_CONTEXT"
     - name: Dump PR event
       if: ${{ github.event.pull_request }}
-      env:
-        GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        echo "$GITHUB_CONTEXT"
+        echo ${{ github.event.pull_request }}
         echo "---"
+        git cat-file -p main | awk 'NR > 1 {if(/^parent/){print $2; exit}}'
         echo "${{ github.event.pull_request.base.sha }}"
