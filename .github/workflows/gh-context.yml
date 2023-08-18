@@ -29,7 +29,7 @@ jobs:
     - name: Dump PR event
       if: ${{ github.event.pull_request }}
       run: |
-        echo ${{ github.event.pull_request }}
+        # echo ${{ github.event.pull_request }}
         echo "---"
-        git cat-file -p main | awk 'NR > 1 {if(/^parent/){print $2; exit}}'
+        git rev-parse ${{ github.event.pull_request.base.ref }}
         echo "${{ github.event.pull_request.base.sha }}"
