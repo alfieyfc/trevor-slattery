@@ -19,6 +19,8 @@ jobs:
     - id: checkout
       name: "Checkout"
       uses: "actions/checkout@v3"
+      with:
+        fetch-depth: 2
     - name: Dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
@@ -29,7 +31,6 @@ jobs:
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
       run: |
-        git fetch
         echo "$GITHUB_CONTEXT"
         echo "---"
         echo "${{ github.event.pull_request.base.sha }}"
