@@ -1,0 +1,19 @@
+name: Triggered by Workflow Run
+on:
+  # Triggers the workflow when any pull request is synchronized (changes to head)
+  workflow_run:
+    workflows: [GH Context]
+    branches: [test/*]
+    types: [completed]
+jobs:
+  print:
+    # Runs only if event it synchronize
+    name: Print more GH Context
+    runs-on: ubuntu-latest
+    steps:
+      # Changes made to head, should be reviewed again
+      - name: print
+        run: |
+          echo ${{ github.event }}
+          echo ---
+          echo ${{ github.event.referenced_workflows.ref }}
