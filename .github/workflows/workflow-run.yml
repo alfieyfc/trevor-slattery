@@ -16,4 +16,4 @@ jobs:
         run: |
           echo ${{ github.event }}
           echo ---
-          echo ${{ github.event.referenced_workflows.ref }}
+          echo ${{ github.event.workflow_run.referenced_workflows.ref }}
