@@ -11,6 +11,8 @@ on:
       - "reopened"
       - "synchronize"
   workflow_dispatch:
+  push:
+    branches: [main]
 
 jobs:
   printJob:
