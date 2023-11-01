@@ -3,7 +3,7 @@ on:
   # Triggers the workflow when any pull request is synchronized (changes to head)
   workflow_run:
     workflows: [GH Context]
-    branches: [test/*]
+    branches: [main]
     types: [completed]
 jobs:
   print:
